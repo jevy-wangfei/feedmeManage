@@ -4,6 +4,10 @@ var exec = require('child_process').exec,
   child;
 var router = express.Router();
 
+
+var error2 = "";
+var out2 = "";
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var result = "";
@@ -14,24 +18,23 @@ router.get('/', function(req, res, next) {
     res.render('index', {
       title: 'Feedme host Manager',
       status: error,
-      out: stdout
+      out: stdout,
+      status2: error2,
+      out2: out2
     });
   });
-
 });
 
-
 router.get('/reload', function(req, res) {
-  var result = "";
-  exec("~/manage/./deploy.sh", function(error, stdout, stderr) {
+
+  //~/feedmeManage/./deploy.sh
+  exec("~/feedmeManage/./deploy.sh", function(error, stdout, stderr) {
     console.log("Error:" + error + "\nStdout:" + stdout + "StdErr:\n" +
       stderr);
-    res.render('index', {
-      title: 'Feedme host Manager',
-      status: error,
-      out: stdout
-    });
+    error2 = error;
+    out2 = stdout;
   });
+  res.redirect('/');
 });
 
 module.exports = router;
